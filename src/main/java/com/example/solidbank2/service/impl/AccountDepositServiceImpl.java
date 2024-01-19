@@ -13,7 +13,7 @@ public class AccountDepositServiceImpl implements AccountDepositService {
 
 
     AccountDAO accountDAO;
-    @Autowired
+
     public AccountDepositServiceImpl(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
     }
@@ -21,9 +21,10 @@ public class AccountDepositServiceImpl implements AccountDepositService {
     @Override
     public void deposit(Account account, double amount) {
         if(amount>=0) {
-            account.setBalance(amount);
+            double newBalance = account.getBalance() + amount;
+            account.setBalance(newBalance);
             System.out.println(amount + " transferred to " + account.getClientID());
-            accountDAO.updateAccount(account);
+            accountDAO.save(account);
         }else
             System.out.println("Error enter proper amount");
     }

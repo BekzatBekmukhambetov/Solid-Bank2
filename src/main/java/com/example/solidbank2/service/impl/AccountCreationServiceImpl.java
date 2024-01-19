@@ -9,9 +9,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AccountCreationServiceImpl implements AccountCreationService {
-    AccountDAO accountDAO;
+    private AccountDAO accountDAO;
 
-    @Autowired
     public AccountCreationServiceImpl(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
     }
@@ -21,16 +20,12 @@ public class AccountCreationServiceImpl implements AccountCreationService {
         String accountNumber = String.format("%03d%06d", 1, accountID);
 
         switch (accountType) {
-            case CHECKING:
-                accountDAO.createNewAccount(new Account(accountType, clientID, accountNumber, 0.0, true));
-
+            case CHECKING, SAVING:
+                accountDAO.save(new Account(accountType, clientID, accountNumber, 0.0, true));
                 break;
-            case SAVING:
-                accountDAO.createNewAccount(new Account(accountType, clientID, accountNumber, 0.0, true));
 
-                break;
             case FIXED:
-                accountDAO.createNewAccount(new Account(accountType, clientID, accountNumber, 0.0, false));
+                accountDAO.save(new Account(accountType, clientID, accountNumber, 0.0, false));
                 break;
         }
         System.out.println("Account Created");

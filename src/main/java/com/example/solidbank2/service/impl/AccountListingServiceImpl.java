@@ -13,24 +13,28 @@ import java.util.List;
 @Service
 public class AccountListingServiceImpl implements AccountListingService {
     AccountDAO accountDAO;
-    @Autowired
+
     public AccountListingServiceImpl(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
     }
 
     @Override
     public Account getClientAccount(String clientID, String accountID) {
-        return accountDAO.getClientAccount(clientID,accountID);
+        return accountDAO.findAccountByClientIDAndId(accountID,clientID);
     }
 
     @Override
     public Account getClientWithdrawAccount(String clientID ,String accountID) {
-        return accountDAO.getClientWithdrawAccount(clientID,accountID);
+        Account account =   accountDAO.findAccountByClientIDAndId(accountID,clientID);
+        if(account.isWithdrawAllowed()){
+            return  account;
+        }
+        return null;
     }
 
     @Override
     public List<Account> getClientAccounts(String clientID) {
-        return accountDAO.getClientAccounts(clientID);
+        return accountDAO.findAllAccountsById(clientID);
     }
 
     @Override

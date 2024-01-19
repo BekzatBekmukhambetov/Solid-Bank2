@@ -23,6 +23,7 @@ public class TransactionDepositCLI {
 
     public void depositMoney(String clientID) {
         Account account =  accountListingService.getClientAccount(clientID,withdrawDepositOperationCLIUI.requestClientAccountNumber());
+        System.out.println(account.toString());
        transactionDeposit.execute(account,withdrawDepositOperationCLIUI.requestClientAmount());
     }
 }

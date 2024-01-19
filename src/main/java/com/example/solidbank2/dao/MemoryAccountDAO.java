@@ -1,3 +1,4 @@
+/*
 package com.example.solidbank2.dao;
 
 import com.example.solidbank2.domain.account.Account;
@@ -54,3 +55,4 @@ public class MemoryAccountDAO implements AccountDAO {
         }return  null;
     }
 }
+*/
