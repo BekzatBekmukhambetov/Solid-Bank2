@@ -15,21 +15,20 @@ public class AccountWithdrawServiceImpl implements AccountWithdrawService {
     }
 
     @Override
-    public void withdraw(Account account, double amount) {
-       if(account == null) {
-            System.out.println("Account its Fixed");
-            return;
-        }
-        if(amount>=0){
-            double test = account.getBalance()-amount;
-            if(test>=0){
-                account.setBalance(test);
+    public void withdraw(Account account, double amount) throws Exception {
+
+        if (amount >= 0) {
+            double remainingBalance = account.getBalance() - amount;
+
+            if (remainingBalance >= 0) {
+                account.setBalance(remainingBalance);
                 accountDAO.save(account);
-                System.out.println(amount+" withdrawn from "+ account.getClientID());
-            }else{
-                System.out.println("Not enough money");
+                System.out.println(amount + " withdrawn from " + account.getClientID());
+            } else {
+                throw new Exception("Insufficient funds");
             }
-        }else
-        System.out.println("incorrect data");
+        } else {
+            throw new Exception("Incorrect Amount");
+        }
     }
 }

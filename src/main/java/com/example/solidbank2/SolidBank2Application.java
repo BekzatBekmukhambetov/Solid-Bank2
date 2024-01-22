@@ -11,14 +11,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
-public class SolidBank2Application implements CommandLineRunner {
-
-    @Autowired
-    private ApplicationContext context;
+public class SolidBank2Application  {
 
     public static void main(String[] args) {
         SpringApplication.run(SolidBank2Application.class, args);
     }
+   /* @Autowired
+    private ApplicationContext context;
+
 
 
     @Override
@@ -67,5 +67,5 @@ public class SolidBank2Application implements CommandLineRunner {
         }
         myCLI.getScanner().close();
 
-    }
+    }*/
 }
