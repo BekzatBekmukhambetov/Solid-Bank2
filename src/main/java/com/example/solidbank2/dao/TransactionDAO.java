@@ -1,12 +1,14 @@
 package com.example.solidbank2.dao;
 
-import com.example.solidbank2.transaction.Transaction;
+
+import com.example.solidbank2.domain.Transaction;
+
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
-public interface TransactionDAO {
-    List<Transaction> getTransactions();
-    void addTransaction(Transaction transaction);
+@Repository
+public interface TransactionDAO extends CrudRepository<Transaction,Long>{
+    List<Transaction> findAllByClientID(String accountID);
 }

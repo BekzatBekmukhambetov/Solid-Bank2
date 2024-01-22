@@ -1,9 +1,9 @@
 package com.example.solidbank2.dao;
 
-import com.example.solidbank2.transaction.Transaction;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+/*
 @Repository
 public class MemoryTransactionDAO implements TransactionDAO{
     List<Transaction>transactions;
@@ -18,3 +18,4 @@ public class MemoryTransactionDAO implements TransactionDAO{
 
     }
 }
+*/

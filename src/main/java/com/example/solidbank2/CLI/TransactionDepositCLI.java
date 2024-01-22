@@ -7,6 +7,9 @@ import com.example.solidbank2.transaction.TransactionDeposit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.security.auth.login.AccountNotFoundException;
+import java.util.Optional;
+
 
 @Component
 public class TransactionDepositCLI {
@@ -21,9 +24,8 @@ public class TransactionDepositCLI {
         this.accountListingService = accountListingService;
     }
 
-    public void depositMoney(String clientID) {
-        Account account =  accountListingService.getClientAccount(clientID,withdrawDepositOperationCLIUI.requestClientAccountNumber());
-        System.out.println(account.toString());
-       transactionDeposit.execute(account,withdrawDepositOperationCLIUI.requestClientAmount());
+    public void depositMoney(String account_id,Double amount)throws Exception , AccountNotFoundException {
+       Account account =  accountListingService.getClientAccount(account_id,"1");
+       transactionDeposit.execute(account,amount);
     }
 }

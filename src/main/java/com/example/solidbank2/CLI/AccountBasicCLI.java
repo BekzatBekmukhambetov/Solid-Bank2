@@ -2,11 +2,13 @@ package com.example.solidbank2.CLI;
 
 import com.example.solidbank2.domain.BankCore;
 import com.example.solidbank2.domain.account.Account;
+import com.example.solidbank2.domain.account.AccountType;
 import com.example.solidbank2.service.AccountListingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class AccountBasicCLI {
@@ -21,21 +23,15 @@ public class AccountBasicCLI {
         this.accountListingService = accountListingService;
     }
 
-    public void createAccountRequest(String clientID){
-        bankCore.createNewAccount(createAccountOperationUI.requestAccountType(),clientID);
+    public void createAccountRequest(AccountType accountType, String clientID){
+        bankCore.createNewAccount(accountType,clientID);
     }
 
-    public void getAccounts(String clientID) {
+    public List<Account> getAccounts(String clientID) {
+        return accountListingService.getClientAccounts(clientID);
+    }
 
-        List<Account> clientAccounts = accountListingService.getClientAccounts(clientID);
-
-        if (clientAccounts != null && !clientAccounts.isEmpty()) {
-            for (Account account : clientAccounts) {
-                System.out.println(account);
-            }
-        } else {
-            System.out.println("No accounts found for the client with ID: " + clientID);
-        }
-
+    public Account getAccount(String account_id) throws AccountNotFoundException {
+        return accountListingService.getClientAccount(account_id,"1");
     }
 }

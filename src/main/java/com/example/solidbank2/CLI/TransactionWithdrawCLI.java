@@ -17,8 +17,8 @@ public class TransactionWithdrawCLI {
         this.accountListingService = accountListingService;
     }
 
-    public void withdrawMoney(String clientID){
-        Account account = accountListingService.getClientWithdrawAccount(clientID,withdrawDepositOperationCLIUI.requestClientAccountNumber());
-        transactionWithdraw.execute(account,withdrawDepositOperationCLIUI.requestClientAmount());
+    public void withdrawMoney(String account_id,Double amount) throws Exception {
+        Account account = accountListingService.getClientWithdrawAccount(account_id,"1");
+        transactionWithdraw.execute(account,amount);
     }
 }
