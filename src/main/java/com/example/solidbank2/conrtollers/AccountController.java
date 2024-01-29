@@ -6,13 +6,11 @@ import com.example.solidbank2.CLI.TransactionDepositCLI;
 import com.example.solidbank2.CLI.TransactionWithdrawCLI;
 import com.example.solidbank2.dao.TransactionDAO;
 import com.example.solidbank2.domain.Transaction;
-import com.example.solidbank2.domain.TransferRequest;
 import com.example.solidbank2.domain.account.Account;
 import com.example.solidbank2.domain.account.AccountType;
 import com.example.solidbank2.service.AccountListingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,18 +21,32 @@ import java.util.Optional;
 
 @Tag(name = "AccountController")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/accounts")
 public class AccountController {
     private String clientID = "1";
 
-    private final MyCLI myCLI;
-    private final AccountBasicCLI accountBasicCLI;
-    private final TransactionDepositCLI transactionDepositCLI;
-    private final TransactionWithdrawCLI transactionWithdrawCLI;
+    private MyCLI myCLI;
+    private AccountBasicCLI accountBasicCLI;
+    private TransactionDepositCLI transactionDepositCLI;
+    private TransactionWithdrawCLI transactionWithdrawCLI;
 
-    private final AccountListingService accountListingService;
-    private final TransactionDAO transactionDAO;
+    private AccountListingService accountListingService;
+    private TransactionDAO transactionDAO;
+
+    public AccountController(MyCLI myCLI,
+                             AccountBasicCLI accountBasicCLI,
+                             TransactionDepositCLI transactionDepositCLI,
+                             TransactionWithdrawCLI transactionWithdrawCLI,
+                             AccountListingService accountListingService,
+                             TransactionDAO transactionDAO) {
+
+        this.myCLI = myCLI;
+        this.accountBasicCLI = accountBasicCLI;
+        this.transactionDepositCLI = transactionDepositCLI;
+        this.transactionWithdrawCLI = transactionWithdrawCLI;
+        this.accountListingService = accountListingService;
+        this.transactionDAO=transactionDAO;
+    }
 
     @Operation(summary = "Print All Accounts")
     @GetMapping("")
@@ -98,18 +110,6 @@ public class AccountController {
     @GetMapping("/{account_id}/transactions")
     public List<Transaction> getAllTransaction(@PathVariable String account_id){
         return transactionDAO.findAllByClientID(account_id);
-    }
-    @Operation(summary = "Transfer money")
-    @PostMapping("/{account_id}/transfer")
-    public ResponseEntity<String> transfer(@PathVariable String account_id,
-                                           @RequestBody TransferRequest transferRequest) throws Exception {
-        try {
-            transactionWithdrawCLI.withdrawMoney(account_id, transferRequest.getAmount());
-            transactionDepositCLI.depositMoney(transferRequest.getDestination_account_id(), transferRequest.getAmount());
-            return new ResponseEntity<>("successful transfer of the amount: "+ transferRequest.getAmount()+" from "+account_id, HttpStatus.OK);
-        }catch (Exception e){
-            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("transfer failed: " + e.getMessage());
-        }
     }
     
 
